@@ -12,12 +12,83 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
+    <script>
+      function previewImage(event) {
+        const imagePreview = document.getElementById("imagePreview");
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = "block";
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+        localStorage.setItem(
+          "darkMode",
+          document.body.classList.contains("dark-mode")
+        );
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        if (localStorage.getItem("darkMode") === "true") {
+          document.body.classList.add("dark-mode");
+        }
+      });
+    </script>
+    <style>
+      /* Dark Mode Styles */
+      .dark-mode {
+        background-color: #121212 !important;
+        color: #ffffff !important;
+      }
+
+      .dark-mode .card {
+        background-color: #1e1e1e !important;
+        color: #ffffff !important;
+      }
+
+      .dark-mode .card-header {
+        background-color: #333 !important;
+      }
+
+      .dark-mode .alert {
+        background-color: #2b2b2b !important;
+        color: #fff !important;
+      }
+
+      .dark-mode .btn-primary {
+        background-color: #6200ea !important;
+        border: none;
+      }
+
+      .developer-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin: 0 10px;
+      }
+    </style>
   </head>
   <body class="bg-light">
     <div class="container mt-5">
-      <div class="card shadow-lg mx-auto" style="max-width: 600px">
-        <div class="card-header bg-primary text-white">
-          <h2 class="text-center">Flower Classification</h2>
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-dark btn-sm" onclick="toggleDarkMode()">
+          🌙 Toggle Dark Mode
+        </button>
+      </div>
+
+      <div
+        class="card shadow-lg mx-auto p-4 rounded-3"
+        style="max-width: 600px"
+      >
+        <div class="card-header bg-primary text-white text-center">
+          <h2>Flower Classification</h2>
         </div>
         <div class="card-body">
           <form method="POST" enctype="multipart/form-data">
@@ -28,24 +99,32 @@
                 name="file"
                 accept="image/*"
                 required
+                onchange="previewImage(event)"
               />
             </div>
+            <img
+              id="imagePreview"
+              class="img-fluid rounded mb-3"
+              style="display: none; max-height: 250px"
+              alt="Image Preview"
+            />
             <button type="submit" class="btn btn-primary w-100">
               Classify Image
             </button>
           </form>
 
           {% if result %}
-          <div class="mt-4">
+          <div class="mt-4 text-center">
             {% if image_path %}
             <img
               src="{{ image_path }}"
-              class="img-fluid rounded mb-3"
+              class="img-fluid rounded mb-3 shadow"
               alt="Uploaded Image"
+              style="max-height: 250px"
             />
             {% endif %}
             <div
-              class="alert {% if 'No matching' in result %}alert-warning{% else %}alert-success{% endif %}"
+              class="alert {% if 'No matching' in result %}alert-warning{% else %}alert-success{% endif %} shadow-sm"
             >
               {{ result }}
             </div>
@@ -53,6 +132,55 @@
           {% endif %}
         </div>
       </div>
+
+      <!-- Developer Details -->
+      <footer class="text-center mt-5">
+        <p class="mb-1">
+          <strong>Developers</strong>
+        </p>
+        <div class="d-flex justify-content-center align-items-center">
+          <img
+            src="{{ url_for('static', filename='wahid.jpg') }}"
+            class="developer-img"
+            alt="Md Wahid"
+          />
+          <strong>Md Wahid</strong>
+          <a
+            href="https://github.com/wahid1099"
+            target="_blank"
+            class="text-decoration-none mx-2"
+            >GitHub</a
+          >
+          |
+          <a
+            href="https://www.linkedin.com/in/md-wahid1/"
+            target="_blank"
+            class="text-decoration-none mx-2"
+            >LinkedIn</a
+          >
+        </div>
+        <div class="d-flex justify-content-center align-items-center mt-2">
+          <img
+            src="{{ url_for('static', filename='zarir.png') }}"
+            class="developer-img"
+            alt="Zarir Islam"
+          />
+          <strong>Zarir Islam</strong>
+          <a
+            href="https://github.com/zarir-islam"
+            target="_blank"
+            class="text-decoration-none mx-2"
+            >GitHub</a
+          >
+          |
+          <a
+            href="https://www.linkedin.com/in/zarir-islam"
+            target="_blank"
+            class="text-decoration-none mx-2"
+            >LinkedIn</a
+          >
+        </div>
+      </footer>
     </div>
   </body>
 </html>
