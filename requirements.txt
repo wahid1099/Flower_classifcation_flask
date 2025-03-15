@@ -4,3 +4,4 @@ tensorflow==2.18.0
 opencv-python==4.11.0.86
 numpy== 2.0.2
 protobuf==5.29.3
+gunicorn
