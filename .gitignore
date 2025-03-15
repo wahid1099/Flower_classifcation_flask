@@ -1,0 +1,5 @@
+myenv/
+Include/
+Lib/
+Scripts/
+pyenv.cfg

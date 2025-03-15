@@ -1,0 +1,16 @@
+body {
+  background: #f8f9fa;
+}
+
+.card {
+  border-radius: 15px;
+}
+
+.alert {
+  border-radius: 10px;
+}
+
+.img-fluid {
+  max-height: 300px;
+  object-fit: contain;
+}
